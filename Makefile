@@ -10,32 +10,35 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minitalk.a
-INCLUDE = minitalk.h
-
 LIB = ar rcs
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 DIR = ./
 
-FILES =
+FILES = client server
 
 SOURCES = $(addprefix $(DIR), $(addsuffix .c, $(FILES)))
 OBJECTS = $(addprefix $(DIR), $(addsuffix .o, $(FILES)))
 
-all: $(NAME)
+all: $(FILES)
+
+server: server.o libft
+	$(CC) -o $@ $< -Llibft -lft
+
+client: client.o libft
+	$(CC) -o $@ $< -Llibft -lft
 
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJECTS) $(INCLUDE)
-	$(LIB) $(NAME) $(OBJECTS)
-
+libft:
+	make -C libft
+ 
 clean:
-	rm -f $(NAME) *.o
+	rm -f $(FILES) *.o
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f all
 
 re: fclean all
 
